@@ -1,4 +1,7 @@
-import Gender from './Gender.js'
+export enum Gender{
+    Female = 'f',
+    Male = 'm'
+}
 
 class Person
 {

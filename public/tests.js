@@ -1,12 +1,26 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const Person_1 = __importDefault(require("./entities/Person"));
-const Book_1 = __importDefault(require("./entities/Book"));
-const Gender_1 = __importDefault(require("./entities/Gender"));
-const pessoa1 = new Person_1.default('Mykaelly', new Date(2002, 09, 17), Gender_1.default.Female);
-const livro1 = new Book_1.default(123324, 112, 2, 'Chapeuzinho', 'Vermelho', new Date(2002, 09, 12), pessoa1);
-console.log(pessoa1);
-console.log(livro1);
+// importação das classes
+import Person from './entities/Person.js';
+import Book from './entities/Book.js';
+import Periodical from './entities/Periodical.js';
+import { Gender } from './entities/Person.js';
+// Instancias 
+// pessoas
+const pessoa1 = new Person('John Green', new Date('1977-08-24T00:00:00'), Gender.Male);
+const pessoa2 = new Person('Rick Riordan', new Date('1964-06-05T00:00:00'), Gender.Male);
+const pessoa3 = new Person('Paula Pimenta', new Date('1975-06-02T00:00:00'), Gender.Female);
+// livros
+const livro1 = new Book(123324, 1, 1, 'Quem é você, Alasca?', 'O primeiro amigo, a primeira garota, as últimas palavras', new Date('2005-03-03T00:00:00'), pessoa1);
+const livro2 = new Book(25367, 1, 2, 'Percy Jackson e os Olimpianos', 'O mar de monstros', new Date('2006-04-01T00:00:00'), pessoa2);
+const livro3 = new Book(123324, 1, 3, 'Minha vida fora de série', '3ª temporada', new Date('2015-07-07T00:00:00'), pessoa1);
+// periodicais
+const periodical1 = new Periodical(2445, 1, 2112, 'Super Interessante', 'Origem da vida', new Date('2006-05-03T00:00:00'), pessoa1);
+const periodical2 = new Periodical(2443, 1, 333, 'Super Interessante', 'Universos paralelos', new Date('2015-07-16T00:00:00'), pessoa2);
+const periodical3 = new Periodical(2443, 1, 333, 'Super Interessante', 'A Era da burrice', new Date('2013-12-22T00:00:00'), pessoa2);
+// arrays com as instancias
+const pessoas = [pessoa1, pessoa2, pessoa3];
+const livros = [livro1, livro2, livro3];
+const periodicais = [periodical1, periodical2, periodical3];
+// consoles pros arrays
+console.log(pessoas);
+console.log(livros);
+console.log(periodicais);

@@ -1,8 +1,8 @@
 // importação das classes
-import Person from './entities/Person.js'
+ import Person from './entities/Person.js'
  import Book from './entities/Book.js'
  import Periodical from './entities/Periodical.js'
- import Gender from './entities/Gender.js'
+ import {Gender} from './entities/Person.js'
 
 
 // Instancias 
@@ -40,4 +40,4 @@ console.log(pessoas)
 
 console.log(livros)
 
-console.log(periodicais)
+console.log(periodicais) 
