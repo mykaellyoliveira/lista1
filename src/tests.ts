@@ -9,7 +9,7 @@ import Person from './entities/Person'
 // pessoas
 const pessoa1 = new Person('John Green' , new Date('1977-08-24T00:00:00') , Gender.Male)
 
-const pessoa2 = new Person('Rick Riordan' , new Date('1965-06-05T00:00:00') , Gender.Male)
+const pessoa2 = new Person('Rick Riordan' , new Date('1964-06-05T00:00:00') , Gender.Male)
 
 const pessoa3 = new Person('Paula Pimenta' , new Date('1975-06-02T00:00:00') , Gender.Female)
 
