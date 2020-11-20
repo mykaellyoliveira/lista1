@@ -1,6 +1,6 @@
 // importação da classe pai (Document) 
-import Document from './Document'
-import Person from './Person';
+import Document from './Document.js'
+import Person from './Person.js'
 
 // classe Periodical herdando Document
 class Periodical extends Document

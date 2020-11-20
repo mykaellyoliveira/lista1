@@ -1,8 +1,8 @@
 // importação das classes
-import Person from './entities/Person'
- import Book from './entities/Book'
- import Periodical from './entities/Periodical'
- import Gender from './entities/Gender'
+import Person from './entities/Person.js'
+ import Book from './entities/Book.js'
+ import Periodical from './entities/Periodical.js'
+ import Gender from './entities/Gender.js'
 
 
 // Instancias 
