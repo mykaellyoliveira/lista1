@@ -15,7 +15,7 @@ const livro3 = new Book(123324, 1, 3, 'Minha vida fora de série', '3ª temporad
 // periodicais
 const periodical1 = new Periodical(2445, 1, 2112, 'Super Interessante', 'Origem da vida', new Date('2006-05-03T00:00:00'), pessoa1);
 const periodical2 = new Periodical(2443, 1, 333, 'Super Interessante', 'Universos paralelos', new Date('2015-07-16T00:00:00'), pessoa2);
-const periodical3 = new Periodical(2443, 1, 333, 'Super Interessante', 'A Era da burrice', new Date('2013-12-22T00:00:00'), pessoa2);
+const periodical3 = new Periodical(2443, 1, 333, 'Super Interessante', 'A Era da burrice', new Date('2013-12-22T00:00:00'), pessoa3);
 // arrays com as instancias
 const pessoas = [pessoa1, pessoa2, pessoa3];
 const livros = [livro1, livro2, livro3];
