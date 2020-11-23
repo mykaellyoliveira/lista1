@@ -5,7 +5,7 @@
  import {Gender} from './entities/Person.js'
 
 
-// Instancias Person, book e periodical
+// Instancias Person, Book e Periodical
 // pessoas
 const pessoa1 = new Person('John Green' , new Date('1977-08-24T00:00:00') , Gender.Male)
 
