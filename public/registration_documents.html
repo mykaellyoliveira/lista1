@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Cadastro de livros e períodicos</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' href='css/style.css'>
+</head>
+<body>
+    <form>
+        <img src="img/study.png">
+        <h1>O que você deseja cadastrar?</h1>
+        <select id="type" class="inputs">
+            <option value="">Selecione uma opção:</option>
+            <option value="b">Livros</option>
+            <option value="p"> Períodicos</option>
+        </select></br></br>  
+        <!-- Livro -->
+        <input id="title" placeholder="Digite o título:" class="inputs_doc">
+        <input id="subtitle" placeholder="Digite o subtítulo:" class="inputs_doc">
+        <input id="publishedAt" type="date" class="inputs_doc">
+        <select id="author" class="inputs_doc">
+            <option value="">Selecione uma opção:</option>
+        </select>
+        <input id="isbn" placeholder="Digite o código isbn:" class="inputs_doc">
+        <input id="edition" placeholder="Digite a edição:" class="inputs_doc">
+        <input id="volume" placeholder="Digite o volume:" class="inputs_doc">
+        <!--Periodicos-->
+        <input id ="issn" placeholder="Digite o código issn:" class="inputs_doc">
+        <input id ="issue" placeholder="Digite a issue:" class="inputs_doc">
+        <button id="button_doc" class="button_doc">Cadastrar</button>
+        <p id="result"></p>
+        <a href="index.html" id="inicio">Página inicial</a>
+    </form>
+    <script src="registration_documents.js" type="module"></script>
+</body>
+</html>
