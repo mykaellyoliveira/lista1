@@ -3,7 +3,7 @@ export enum Gender{
     Male = 'm'
 }
 
-class Person
+class Person 
 {
     name : String;
     birth : Date;

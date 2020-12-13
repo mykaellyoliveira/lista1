@@ -33,7 +33,7 @@ div h1{
     font-size: 30px;
 }
 form{
-    width: 40%;
+    width: 45%;
     padding: 20px;
     text-align: center;    
     box-shadow: 5px 2px 5px #707070;
@@ -87,7 +87,7 @@ form .button_doc{
 form .button_doc:hover{
     margin: 25px auto;
 }
-form #button_person{
+form #button_person, #limpar, #limparb, #limparp{
     width: 30%;
     padding: 10px;
     border: 0px;
@@ -119,4 +119,14 @@ form #inicio{
     font-size: 14px;
     margin: 5px;
     float: left;
+}
+form #filterb, #limparb, #filterp, #limparp{
+    margin: 5px auto;
+    display: none;
+}
+form #limpar, #limparb, #limparp{
+    width: 15%;
+}
+form hr{
+    background-color:  rgba(28, 158, 97);
 }

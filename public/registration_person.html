@@ -9,7 +9,7 @@
 <body>
     <form> 
         <img src="img/user.png">
-        <h1> Cadastro de pessoas: </h1>
+        <h1> Cadastro de autores: </h1>
         <input id="name" placeholder="Digite seu nome:" class="inputs" ></br></br>
         <input id="birth" type="date" class="inputs" ></br></br>
         <select id="gender" class="inputs">
@@ -18,7 +18,14 @@
             <option value="m"> Masculino</option>
         </select></br></br>
         <button id="button_person">Cadastrar</button>
-        <p id="message"></p>
+        <p id="message"></p></br>
+        <hr></hr>
+        <img src="img/search.png">
+        <h1> Buscar autores: </h1>
+        <input id="filter" placeholder="Buscar autor" class="inputs">
+        <button id="limpar" type="reset">Limpar</button>
+        </br></br>
+        <table></table></br>
         <a href="index.html" id="inicio">Página inicial</a>
     </form>  
     <script src="registration_person.js" type="module"></script> 

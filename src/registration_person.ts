@@ -5,12 +5,18 @@ const name = document.querySelector<HTMLInputElement>('#name')!
 const birth = document.querySelector<HTMLInputElement>('#birth')!
 const gender = document.querySelector<HTMLSelectElement>('#gender')!
 const message = document.querySelector<HTMLParagraphElement>('#message')!
+const buttonl = document.querySelector<HTMLButtonElement>("#limpar")!
+const filtrar = document.querySelector<HTMLInputElement>("#filter")!
+const buttonc = document.querySelector<HTMLInputElement>("#button_person")!
 const form = document.querySelector('form')!
+const table = document.querySelector('table')!
+
 
 const persons: Person[] = [] 
 showPersons()
 
-form.addEventListener('submit', (e: Event) =>
+
+buttonc.addEventListener('click', (e: Event) =>
 {
     e.preventDefault()
    
@@ -52,16 +58,38 @@ form.addEventListener('submit', (e: Event) =>
         gender.focus()
         return
     }
+
+    const capitalize = (text: string) => {
+        const words = text.split(' ')
+    
+        for (let i = 0; i < words.length; i++) {
+        words[i] =
+            words[i].substr(0, 1).toUpperCase() +
+            words[i].substr(1).toLowerCase()
+        }
+    
+        return words.join(' ')
+            .replace(/ e /gi, ' e ')
+            .replace(/ da /gi, ' da ')
+            .replace(/ de /gi, ' de ')
+            .replace(/ do /gi, ' do ')
+            .replace(/ dos /gi, ' dos ')
+
+    }
+    
+    const trimAll = (text: string) => text.trim().replace(/\s+/g, ' ')
+    
+    
     try{
         var birthNew = new Date(birth.value)
 
-        const person = new Person(name.value, birthNew, gender.value === 'f' ? Gender.Female : Gender.Male)  
+        const person = new Person(capitalize(trimAll(name.value)), birthNew, gender.value === 'f' ? Gender.Female : Gender.Male)  
 
         persons.push(person)
 
         localStorage.setItem('persons', JSON.stringify(persons))
         showPersons()
-        message.innerText = name.value + "  cadastrado(a) com sucesso!"
+        message.innerText = capitalize(trimAll(name.value)) + "  cadastrado(a) com sucesso!"
     }
 
     catch(error: any){
@@ -73,7 +101,7 @@ form.addEventListener('submit', (e: Event) =>
     gender.value = ''
 })
 
- export function showPersons() {
+export function showPersons() {
     if (localStorage.getItem('persons')) {
       const data = JSON.parse(localStorage.getItem('persons')!)
   
@@ -87,4 +115,87 @@ form.addEventListener('submit', (e: Event) =>
         ))
       }
     }
+
+    let personsLocalStorage: Array<Person> = JSON.parse(localStorage.getItem("persons")|| '{}')
+
+    // ordenar em ordem
+    const sortNomes = (a: typeof personsLocalStorage[0], b: typeof personsLocalStorage[0]) => a.name.localeCompare(b.name.toString())
+    let ord =  [...personsLocalStorage].sort(sortNomes)
+
+    let lines = ''
+
+    for (const person of ord) {
+
+    lines +=  `
+        <tr>
+        <td>${ (person as Person).name }</td>
+        <td>${ (person as Person).birth }</td>
+        <td>${ (person as Person).gender   }</td>
+
+        </tr>
+    `
+    }
+
+    table.style.display = 'table'
+    table.innerHTML = `
+    <thead>
+        <tr> 
+           <th> Autor </th>
+           <th> Data </th>
+           <th> Sexo </th>
+        </tr>       
+    </thead>
+    <tbody>
+        ${lines}
+    </tbody>
+    `
 }
+
+filtrar.addEventListener("keyup", filtro);
+
+function filtro(){
+    if (!filtrar.value){
+        showPersons()
+    }
+    else{
+        let personsLocalStorage: Array<Person> = JSON.parse(localStorage.getItem("persons")|| '{}')
+
+        // filtrar 
+        const onlyPersons = (obj: typeof personsLocalStorage[0]) => obj.name.includes(filtrar.value)
+
+        let filter = personsLocalStorage.filter(onlyPersons)
+        let lines = ''
+    
+
+        for (const person of filter) {
+
+            lines +=  `
+                <tr>
+                <td>${ (person as Person).name }</td>
+                <td>${ (person as Person).birth }</td>
+                <td>${ (person as Person).gender   }</td>
+
+                </tr>
+            `
+        }
+
+        table.style.display = 'table'
+        table.innerHTML = `
+        <thead>
+            <tr> 
+            <th> Autor </th>
+            <th> Data </th>
+            <th> Sexo </th>
+            </tr>       
+        </thead>
+        <tbody>
+            ${lines}
+        </tbody>
+        `   
+        }
+}
+
+
+buttonl.addEventListener('click', event =>{
+    showPersons()
+})

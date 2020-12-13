@@ -4,6 +4,7 @@ import Person from './entities/Person.js'
 import {showPersons} from './registration_person.js'
 
 const selectType = document.querySelector<HTMLSelectElement>("#type")!
+const filtro = document.querySelector<HTMLSelectElement>('#search')!
 const title = document.querySelector<HTMLInputElement>('#title')!
 const subtitle = document.querySelector<HTMLInputElement>('#subtitle')!
 const publishedAt = document.querySelector<HTMLInputElement>('#publishedAt')!
@@ -15,7 +16,13 @@ const issn = document.querySelector<HTMLInputElement>('#issn')!
 const issue = document.querySelector<HTMLInputElement>('#issue')!
 const message = document.querySelector<HTMLParagraphElement>("#result")!
 const button = document.querySelector<HTMLButtonElement>("#button_doc")!
-const form = document.querySelector<HTMLFormElement>('form')!
+const buttonb = document.querySelector<HTMLButtonElement>("#limparb")!
+const filtrarb = document.querySelector<HTMLInputElement>("#filterb")!
+const buttonp = document.querySelector<HTMLButtonElement>("#limparp")!
+const filtrarp = document.querySelector<HTMLInputElement>("#filterp")!
+const table = document.querySelector('table')!
+const books: Book[] = []
+const periodicos: Periodical[] =[]
 
 selectType.addEventListener('change', (event) => {
     message.innerText = "";
@@ -58,16 +65,15 @@ selectType.addEventListener('change', (event) => {
         isbn.style.display = "none";
         edition.style.display = "none";        
         button.style.display = "none";
+        table.style.display = "none";
         showSelect();
     }
 });
 
-const books: Book[] = []
-const periodicos: Periodical[] =[]
 let personsLocalStorage: Array<Person> = JSON.parse(localStorage.getItem("persons")|| '{}')
 let nomes = personsLocalStorage.map(p=> p.name)
 
-form.addEventListener('submit', (e: Event)=>{
+button.addEventListener('click', (e: Event)=>{
     e.preventDefault()
 
     var indice = author.value;
@@ -76,6 +82,32 @@ form.addEventListener('submit', (e: Event)=>{
 
     const valorAuthor = author.value.trim()
 
+    const capitalize = (text: string) => {
+        const words = text.split(' ')
+      
+        for (let i = 0; i < words.length; i++) {
+          words[i] =
+            words[i].substr(0, 1).toUpperCase() +
+            words[i].substr(1).toLowerCase()
+        }
+        return words.join(' ')
+            .replace(/ a /gi, ' a ')
+            .replace(/ a /gi, ' as ')
+            .replace(/ o /gi, ' o ')
+            .replace(/ a /gi, ' os ')
+            .replace(/ e /gi, ' e ')
+            .replace(/ da /gi, ' da ')
+            .replace(/ a /gi, ' das ')
+            .replace(/ de /gi, ' de ')
+            .replace(/ do /gi, ' do ')
+            .replace(/ dos /gi, ' dos ')
+            .replace(/ a /gi, ' na ')
+            .replace(/ a /gi, ' nas ')
+            .replace(/ a /gi, ' no ')
+    }
+      
+    const trimAll = (text: string) => text.trim().replace(/\s+/g, ' ')
+    
     if(selectType.value == "b"){
 
         if(!title.value.trim()){
@@ -148,12 +180,12 @@ form.addEventListener('submit', (e: Event)=>{
             var editionb = parseInt(edition.value)
             var volumeb = parseInt(volume.value)
 
-            const book = new Book(isbnb, editionb, volumeb, title.value, subtitle.value, publishedAtb, person)
+            const book = new Book(isbnb, editionb, volumeb, capitalize(trimAll(title.value)), subtitle.value, publishedAtb, person)
             
             books.push(book)   
             localStorage.setItem('books', JSON.stringify(books))
             showBooks() 
-            message.innerText = title.value + " livro cadastrado com sucesso!"
+            message.innerText = "O livro" + capitalize(trimAll(title.value)) + " foi cadastrado com sucesso!"
         }
         catch{
             message.innerText = 'Errroor, tente novamente!'
@@ -229,13 +261,13 @@ form.addEventListener('submit', (e: Event)=>{
             var volumep = parseInt(volume.value)
             var publishedAtp = new Date(publishedAt.value)
         
-            const periodico = new Periodical(issnp,volumep, issuep,title.value, subtitle.value, publishedAtp, person)
+            const periodico = new Periodical(issnp,volumep, issuep,capitalize(trimAll(title.value)), subtitle.value, publishedAtp, person)
 
             periodicos.push(periodico)
             localStorage.setItem('periodicos', JSON.stringify(periodicos))
             showPeriodicais()
 
-            message.innerText = title.value + " periódico cadastrado com sucesso!"
+            message.innerText = "O periódico" + capitalize(trimAll(title.value)) + "foi cadastrado com sucesso!"
         }
         catch{
             message.innerText = "Errrrrror, tente novamente!"
@@ -269,6 +301,47 @@ function showBooks() {
         ))
       }
     }
+    
+    let booksLocalStorage: Array<Book> = JSON.parse(localStorage.getItem("books")|| '{}')
+   
+    const sortTitle = (a: typeof booksLocalStorage[0], b: typeof booksLocalStorage[0]) => a.title.localeCompare(b.title.toString())
+
+    let ord =  [...booksLocalStorage].sort(sortTitle)
+
+    let lines = ''
+ 
+    for (const book of ord) {
+
+    lines +=  `
+        <tr>
+            <td>${ (book as Book).isbn }</td>
+            <td>${ (book as Book).edition }</td>
+            <td>${ (book as Book).volume }</td>
+            <td>${ (book as Book).title }</td>
+            <td>${ (book as Book).subtitle }</td>
+            <td>${ (book as Book).publishedAt }</td>
+            <td>${ (book as Book).author.name }</td>
+        </tr>
+    `
+    }
+
+    table.style.display = 'table'
+    table.innerHTML = `
+    <thead>
+        <tr> 
+            <th> Isbn </th>
+            <th> Edition </th>
+            <th> Volume </th>
+            <th> Title </th>
+            <th> Subtitle </th>
+            <th> Data </th>
+            <th> Autor </th
+        </tr>       
+    </thead>
+    <tbody>
+        ${lines}
+    </tbody>
+    `
 }
 
 
@@ -290,6 +363,46 @@ function showPeriodicais() {
         ))
       }
     }
+    let periodicosLocalStorage: Array<Periodical> = JSON.parse(localStorage.getItem("periodicos")|| '{}')
+   
+    const sortTitle = (a: typeof periodicosLocalStorage[0], b: typeof periodicosLocalStorage[0]) => a.title.localeCompare(b.title.toString())
+
+    let ord =  [...periodicosLocalStorage].sort(sortTitle)
+
+    let lines = ''
+ 
+    for (const periodico of ord) {
+
+    lines +=  `
+        <tr>
+        <td>${ (periodico as Periodical).issn }</td>
+        <td>${ (periodico as Periodical).volume }</td>
+        <td>${ (periodico as Periodical).issue }</td>
+        <td>${ (periodico as Periodical).title }</td>
+        <td>${ (periodico as Periodical).subtitle }</td>
+        <td>${ (periodico as Periodical).publishedAt}</td>
+        <td>${ (periodico as Periodical).author.name }</td>
+        </tr>
+    `
+    }
+
+    table.style.display = 'table'
+    table.innerHTML = `
+    <thead>
+        <tr> 
+            <th>Issn</th>
+            <th>Volume</th>
+            <th>Issue</th>
+            <th>Título</th>
+            <th>Subtítulo</th>
+            <th>Data</th>
+            <th>Autor</th>
+        </tr>       
+    </thead>
+    <tbody>
+        ${lines}
+    </tbody>
+    `
 }
 
 function showSelect(){
@@ -300,7 +413,128 @@ function showSelect(){
     }           
 }
 
+filtro.addEventListener('change', event => {
+    if (filtro.value){
+        if(filtro.value == "b"){
+            filtrarb.style.display = "block"
+            buttonb.style.display = "block"
+            filtrarp.style.display = "none"
+            buttonp.style.display = "none"
+            filtrarb.addEventListener("keyup", event => {
+                filtrob()
+            });
+            showBooks();
+        }
+        else if(filtro.value == "p"){
+            filtrarp.style.display = "block"
+            buttonp.style.display = "block"
+            filtrarb.style.display = "none"
+            buttonb.style.display = "none"
+            filtrarp.addEventListener("keyup", filtrop);
+            showPeriodicais();
+        }
+    }
+    else{
+        filtrarb.style.display = "none"
+        buttonb.style.display = "none"
+        filtrarp.style.display = "none"
+        buttonp.style.display = "none"
+        table.innerHTML = ''
+    }
+})
 
+function filtrob(){
+    if (!filtrarb.value){
+        showBooks()
+    }
+    else{
+        let booksLocalStorage: Array<Book> = JSON.parse(localStorage.getItem("books")|| '{}')
 
+        // filtrar 
+        const onlyBooks = (obj: typeof booksLocalStorage[0]) => obj.title.includes(filtrarb.value)
 
+        let filter = booksLocalStorage.filter(onlyBooks)
+        let lines = ''
+    
+        for (const book of filter) {
 
+        lines +=  `
+            <tr>
+                <td>${ (book as Book).isbn }</td>
+                <td>${ (book as Book).edition }</td>
+                <td>${ (book as Book).volume }</td>
+                <td>${ (book as Book).title }</td>
+                <td>${ (book as Book).subtitle }</td>
+                <td>${ (book as Book).publishedAt }</td>
+                <td>${ (book as Book).author.name }</td>
+            </tr>
+        `
+        }
+
+        table.style.display = 'table'
+        table.innerHTML = `
+        <thead>
+            <tr> 
+                <th> Isbn </th>
+                <th> Edition </th>
+                <th> Volume </th>
+                <th> Title </th>
+                <th> Subtitle </th>
+                <th> Data </th>
+                <th> Autor </th
+            </tr>       
+        </thead>
+        <tbody>
+            ${lines}
+        </tbody>
+        `
+        }
+}
+
+function filtrop(){
+    if(!filtrarp.value){
+        showPeriodicais()
+    }
+    else{
+        let periodicalLocalStorage: Array<Periodical> = JSON.parse(localStorage.getItem("periodicos")|| '{}')
+
+        // filtrar 
+        const onlyPeriodicos= (obj: typeof periodicalLocalStorage[0]) => obj.title.includes(filtrarp.value)
+
+        let filter = periodicalLocalStorage.filter(onlyPeriodicos)
+        let lines = ''
+    
+        for (const periodico of filter) {
+
+        lines +=  `
+            <tr>
+            <td>${ (periodico as Periodical).issn }</td>
+            <td>${ (periodico as Periodical).volume }</td>
+            <td>${ (periodico as Periodical).issue }</td>
+            <td>${ (periodico as Periodical).title }</td>
+            <td>${ (periodico as Periodical).subtitle }</td>
+            <td>${ (periodico as Periodical).publishedAt}</td>
+            <td>${ (periodico as Periodical).author.name }</td>
+            </tr>
+        `
+        }
+
+        table.style.display = 'table'
+        table.innerHTML = `
+        <thead>
+            <tr> 
+                <th>Issn</th>
+                <th>Volume</th>
+                <th>Issue</th>
+                <th>Título</th>
+                <th>Subtítulo</th>
+                <th>Data</th>
+                <th>Autor</th>
+            </tr>       
+        </thead>
+        <tbody>
+            ${lines}
+        </tbody>
+        `
+        }
+}
